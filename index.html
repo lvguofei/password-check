@@ -1,0 +1,290 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=0.5, user-scalable=yes,"/> 
+<title>账号口令强度检测</title>
+<link type="text/css" href="css/style.css" media="screen" rel="stylesheet" />
+<!--[if lt IE 7]>
+<link type="text/css" href="css/ie.css" media="screen" rel="stylesheet" />
+-->
+    <style type="text/css">
+    #content {
+        overflow:hidden;
+        position: absolute;
+        width: 17cm;
+        height: 10cm;
+        //border: 1px solid red;
+        text-align: center;/*(让div中的内容居中)*/
+        top: 40%;
+        left: 50%;
+        margin-top: -160px;
+        margin-left: -330px;
+        /*margin-top: -10em;
+        margin-left: -25em;*/
+    }
+       </style>
+</head>
+<script type="text/javascript" src="js/jquery.js" language="javascript"></script>
+<body >
+  <div id="header">
+    <div>
+    </div>
+  </div>
+  <div id="content">
+  <center><h1 style='color:#fff'></h1></center>
+<form id="formPassword" name="formPassword" >
+        <table id="tablePwdCheck" cellpadding="5" cellspacing="1" border="0">
+            <tr style='height:30px; line-height: 30px;'>
+                <th colspan="3" class="txtCenter" style="font-size:18px;">账号口令强度检测</th>
+            </tr>
+            <tr>
+              <th>用户名:</th>
+              <td>
+                 <input type="text" id="userTxt" name="userTxt" style="width:200px;" placeholder="请输入账号,可为空" autocomplete="off" o  />
+              </td>
+              <td rowspan="6">
+              <center> <input type='button' value='检测' class='btn_click' style="margin-top:33px;" onclick='check()'/></center>
+              </td>
+            </tr>
+            <tr>
+                <th>口令:</th>
+                <td>
+                    <input type="text" id="passwordTxt" name="passwordTxt" placeholder="请输入口令,不可为空" style="width:200px;" autocomplete="off" o  />
+                </td>
+            </tr>
+            <tr>
+                <th>强度:</th>
+                <td>
+                    <div id="scorebarBorder">
+                    <div id="score"><div class='color_score' style='height:20px; line-height: 20px;'></div></div>
+                    <div id="scorebar">&nbsp;</div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <table id="tablePwdStatus" cellpadding="5" cellspacing="1" border="0" style='display:none;'>
+            <tr >
+               <!-- <th colspan="6">加分项</th>-->
+            </tr>
+            <tr id='li_nLength'>
+                <td width="1%"><div id="div_nLength" class="fail">&nbsp;</div></td>
+                <td width="94%">口令长<8</td>
+
+            </tr>
+           <!-- <tr id='li_nAlphaUC'>
+                <td><div id="div_nAlphaUC" class="fail">&nbsp;</div></td>
+                <td>大写字母</td>
+
+            </tr> -->
+           <!-- <tr id='li_nAlphaLC'>
+                <td><div id="div_nAlphaLC" class="fail">&nbsp;</div></td>
+                <td>小写字母</td>
+
+            </tr>-->
+           <!-- <tr id='li_nNumber'>
+                <td><div id="div_nNumber" class="fail">&nbsp;</div></td>
+                <td>数量</td>
+
+           </tr>-->
+            <!--<tr id='li_nSymbol'>
+                <td><div id="div_nSymbol" class="fail">&nbsp;</div></td>
+                <td>特殊字符</td>
+
+           </tr>-->
+            <tr id='li_nNumchar'>
+                <td><div id="div_nNumchar" class="fail">&nbsp;</div></td>
+                <td>口令不包含大/小写字母,数字,特殊符号中至少三类</td>
+           </tr>
+            <!--<tr>
+                <td><div id="div_nMidChar" class="fail">&nbsp;</div></td>
+                <td>中间数字或符号</td>
+           </tr>-->
+            <tr>
+              <!--  <th colspan="6">扣分项</th>-->
+            </tr>
+         <!-- <tr>
+                      <td width="1%"><div id="div_nAlphasOnly" class="pass">&nbsp;</div></td>
+                      <td width="94%">仅字母</td>
+
+            <tr>
+                      <td><div id="div_nNumbersOnly" class="pass">&nbsp;</div></td>
+                      <td>仅数字</td>
+
+            </tr>-->
+            <tr id='li_k_ling'>
+                <td><div id="div_k_ling" class="pass">&nbsp;</div></td>
+                <td>口令为默认口令</td>
+            </tr>
+            <tr id='li_diff'>
+                <td><div id="div_diff" class="pass">&nbsp;</div></td>
+                <td>用户名口令相似</td>
+
+            </tr>
+            <tr id='li_ko_ling'>
+                <td><div id="div_ko_ling" class="pass">&nbsp;</div></td>
+                <td>连续的字母/数字/特殊符号过多</td>
+
+            </tr>
+            <!--<tr id='li_nRepChar'>
+                  <td><div id="div_nRepChar" class="pass">&nbsp;</div></td>
+                  <td>重复字符(不区分大小写)</td>
+            </tr>  -->
+            <tr id='li_nSeqAlpha'>
+                <td><div id="div_nSeqAlpha" class="pass">&nbsp;</div></td>
+                <td>口令包含连续字母(≥3)</td>
+            </tr>
+            <tr id='li_rev'>
+                <td><div id="div_rev" class="pass">&nbsp;</div></td>
+                <td>密码为账号的反序</td>
+            </tr>
+          <!--<tr>
+                <td><div id="div_nConsecAlphaLC" class="pass">&nbsp;</div></td>
+                <td>连续小写字母</td>
+
+            </tr>  -->
+            <tr id='li_nSeqNumber'>
+                <td><div id="div_nSeqNumber" class="pass">&nbsp;</div></td>
+                <td>口令包含键盘序列数字(≥3)</td>
+            <tr id='li_nConsecAlphaUC'>
+                <td><div id="div_nConsecAlphaUC" class="pass">&nbsp;</div></td>
+                <td>口令包含键盘序列字母(≥3)</td>
+            </tr>
+            <tr id='li_nSeqSymbol'>
+                <td><div id="div_nSeqSymbol" class="pass">&nbsp;</div></td>
+                <td>口令包含键盘序列符号(≥3)</td>
+            </tr>
+            <tr id='li_ikl'>
+                <td><div id="div_ikl" class="pass">&nbsp;</div></td>
+                <td>口令包含连续重复字符</td>
+            </tr>
+        </table>
+        <table id="tableCheck" cellpadding="5" cellspacing="1" border="0">
+            <tr style='height:30px; line-height: 30px;'>
+                <th colspan="3" class="txtCenter" style="font-size:18px;">强口令随机生成</th>
+            </tr>
+            <tr>
+                <td rowspan="3">
+                    <center><input type='button' value='口令生成' class='strong_click' style="margin-top:8px;" onclick='strong()' /></center>
+                    <!--<script type="text/javascript" src="js/jquery.js" language="javascript"></script>-->
+                </td>
+                <td>
+                    <center><input type='text' value='' id='strongpass' class='strong_click' style="margin-top:8px;" /></center>
+                </td>
+            </tr>
+        </table>
+</form>
+</div>
+</body>
+</html>
+<script type="text/javascript">
+    function check(){
+        var user = document.getElementById("userTxt").value;
+        var pwd = document.getElementById("passwordTxt").value;
+        //console.log(pwd.match(reg));
+
+        if(pwd == ''){
+            return false;
+        }else{
+            $.ajax({
+                url:'./lib/index.php',
+                data:{pwd:pwd,user:user},
+                success:function(response){
+                    //console.log(response);
+                    var datalist = eval("("+response+")");
+                    var list = eval("("+datalist.list+")");
+                    var nlist = eval("("+datalist.nlist+")");
+                    var reg = /([A-Z])\1{2,}/;
+
+                    if(datalist.nScore == '0'){
+                        $('.color_score').css('background','green');
+                        $('.color_score').css('width','100%');
+                        $('.color_score').html('强');
+                    }else  if(datalist.nScore < 7){
+                        $('.color_score').css('background','#F05959');
+                        $('.color_score').css('width','30%')
+                        $('.color_score').html('弱');
+                    }else if(datalist.nScore == 1){
+                        $('.color_score').css('background','#51D1ff');
+                        $('.color_score').css('width','60%');
+                        $('.color_score').html('中');
+                    }
+
+                    for(var i in list){
+                        if(list[i] > 0){
+                            $('#tablePwdStatus').show();
+                            $('#li_'+i).show();
+                            $('#div_'+i).html("<img src='./img/dui.jpg' style='width:20px;height:20px;'>");
+                        }else{
+                            $('#li_'+i).hide();
+                        }
+                    }
+                    for(var i in nlist){
+                        if(nlist[i] > 0){
+                            $('#tablePwdStatus').show();
+                            $('#li_'+i).show();
+                            $('#div_'+i).html("<img src='./img/cuo.jpg' style='width:20px;height:20px;'>");
+                        }else{
+                            $('#li_'+i).hide();
+                        }
+                    }
+                    //连续大写字母>=3
+                    if(pwd.match(reg) != '' && pwd.match(reg) != null){
+                        var Dlist = {nLength: 3, rev: 0, nNumchar: 1, nConsecAlphaUC: 0, nSeqAlpha: 0,diff:0,ikl:3,k_ling:0,ko_ling:1,nSeqNumber:0,nSeqSymbol:0};
+                        var datalist = {nScore:"4"};
+
+                        if(datalist.nScore == '0'){
+                            $('.color_score').css('background','green');
+                            $('.color_score').css('width','100%');
+                            $('.color_score').html('强');
+                        }else  if(datalist.nScore < 7){
+                            $('.color_score').css('background','#F05959');
+                            $('.color_score').css('width','30%')
+                            $('.color_score').html('弱');
+                        }else if(datalist.nScore == 1){
+                            $('.color_score').css('background','#51D1ff');
+                            $('.color_score').css('width','60%');
+                            $('.color_score').html('中');
+                        }
+                        for(var i in list){
+                            if(list[i] > 0){
+                                $('#tablePwdStatus').show();
+                                $('#li_'+i).show();
+                                $('#div_'+i).html("<img src='./img/dui.jpg' style='width:20px;height:20px;'>");
+                            }else{
+                                $('#li_'+i).hide();
+                                $('#li_ikl').hide();
+                            }
+                        }
+                        for(var i in Dlist){
+                            if(nlist[i] > 0){
+                                $('#tablePwdStatus').show();
+                                $('#li_'+i).show();
+                                $('#div_'+i).html("<img src='./img/cuo.jpg' style='width:20px;height:20px;'>");
+                                $('#li_ikl').show();
+                                $('#div_ikl').html("<img src='./img/cuo.jpg' style='width:20px;height:20px;'>");
+                            }else{
+                                $('#li_'+i).hide();
+                            }
+                        }
+                    }
+                },
+                error:function(){
+
+                }
+            });
+        }
+    }
+    //生成强度密码
+    function strong() {
+        $.ajax({
+            url:'./lib/strong.php',
+            cache:false,
+            success:function(response){
+                var pass = response;
+                document.getElementById("strongpass").value=pass;
+            },
+        });
+
+    }
+</script>

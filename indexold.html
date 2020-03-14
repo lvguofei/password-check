@@ -1,0 +1,228 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>密码强度检测</title>
+<link type="text/css" href="css/pwdmeter.css" media="screen" rel="stylesheet" />
+<script type="text/javascript" src="js/pwdmeter.js" language="javascript"></script>
+</head>
+<body >
+  <div id="header">
+    <div>
+      <!-- <ul id="navigation">
+        <li class="current_page_item"><a href="http://passwordmeter.com" title="Home"><span>Home</span></a></li>
+        <li class="current_page_item"><a href="http://blogs.passwordmeter.com" title="Home"><span>Feed</span></a></li>
+      </ul>-->
+    </div>
+  </div>
+  <div id="content">
+<form id="formPassword" name="formPassword">
+            <table id="tablePwdCheck" cellpadding="5" cellspacing="1" border="0">
+              <tr>
+                  <th colspan="2" class="txtCenter">输入你的密码</th>
+                    <th class="txtCenter">提交</th>
+               </tr>
+               <tr>
+                    <th>密码:</th>
+                    <td>
+                    <!--  <input type="password" id="passwordPwd" name="passwordPwd" autocomplete="off" onkeyup="chkPass(this.value);"  />-->
+            <input type="text" id="passwordTxt" name="passwordTxt" autocomplete="off" o  />
+                   <!-- <input type='button' value='验证' class='btn_click'/>-->
+                    <script>
+                   /* $('.btn_click').click(function(){
+                        alert('13');
+                    });*/
+                
+                    </script>
+                    </td>
+                 <td rowspan="4">
+                  <center><input type='button' value='验证' class='btn_click' style="margin-top:17px;" onclick='check()'/></center>
+						<script>
+						//onkeyup="chkPass(this.value);" 
+						function check(){
+						var pwd = document.getElementById("passwordTxt").value;
+					       	chkPass(pwd); 
+						}
+						</script>
+                         <!--  <ul>
+                            <li>Minimum 8 characters in length</li>
+                            <li>Contains 3/4 of the following items:<br />
+                                - Uppercase Letters<br />
+                                - Lowercase Letters<br />
+                                - Numbers<br />
+                                - Symbols<br />
+                            </li>
+                        </ul>-->
+                    </td>
+                </tr>
+               <!-- <tr>
+                    <th>是否隐藏:</th>
+                    <td><input type="checkbox" id="mask" name="mask" value="1" checked="checked" onclick="togPwdMask();" /></td>
+                </tr>-->
+                <tr>
+                    <th>强度:</th>
+                    <td>
+                        <div id="scorebarBorder">
+                        <div id="score">0</div>
+                        <div id="scorebar">&nbsp;</div>
+                        </div>
+                    </td>
+                </tr>
+              <!--  <tr>
+                    <th>复杂项:</th>
+                    <td><div id="complexity">Too Short</div></td>
+                </tr>-->
+            </table>
+           <table id="tablePwdStatus" cellpadding="5" cellspacing="1" border="0">
+                <tr>
+                    <th colspan="2">加分项</th>
+                    <th class="txtCenter">类型</th>
+                    <th class="txtCenter">方式</th>
+                    <th class="txtCenter">数量</th>
+                    <th class="txtCenter">分数</th>
+                </tr>
+                <tr>
+                    <td width="1%"><div id="div_nLength" class="fail">&nbsp;</div></td>
+                    <td width="94%">字符数</td>
+                    <td width="1%" class="txtCenter">Flat</td>
+                    <td width="1%" class="txtCenter italic">+(n*4)</td>
+                    <td width="1%"><div id="nLength" class="box">&nbsp;</div></td>
+                    <td width="5%"><div id="nLengthBonus" class="boxPlus">&nbsp;</div></td>
+                </tr>  
+                <tr>
+                    <td><div id="div_nAlphaUC" class="fail">&nbsp;</div></td>
+                    <td>大写字母</td>
+                    <td class="txtCenter">Cond/Incr</td>
+                    <td nowrap="nowrap" class="txtCenter italic">+((len-n)*2)</td>
+                   <td><div id="nAlphaUC" class="box">&nbsp;</div></td>
+                    <td><div id="nAlphaUCBonus" class="boxPlus">&nbsp;</div></td>
+                </tr>  
+                <tr>
+                    <td><div id="div_nAlphaLC" class="fail">&nbsp;</div></td>
+                    <td>小写字母</td>
+                    <td class="txtCenter">Cond/Incr</td>
+                    <td class="txtCenter italic">+((len-n)*2)</td>
+                    <td><div id="nAlphaLC" class="box">&nbsp;</div></td>
+                    <td><div id="nAlphaLCBonus" class="boxPlus">&nbsp;</div></td>
+                </tr>
+                <tr>
+                    <td><div id="div_nNumber" class="fail">&nbsp;</div></td>
+                    <td>数字</td>
+                    <td class="txtCenter">Cond</td>
+                    <td class="txtCenter italic">+(n*4)</td>
+                    <td><div id="nNumber" class="box">&nbsp;</div></td>
+                    <td><div id="nNumberBonus" class="boxPlus">&nbsp;</div></td>
+               </tr>
+                <tr>
+                    <td><div id="div_nSymbol" class="fail">&nbsp;</div></td>
+                    <td>特殊字符</td>
+                    <td class="txtCenter">Flat</td>
+                    <td class="txtCenter italic">+(n*6)</td>
+                    <td><div id="nSymbol" class="box">&nbsp;</div></td>
+                    <td><div id="nSymbolBonus" class="boxPlus">&nbsp;</div></td>
+               </tr>
+                   <tr>
+                    <td><div id="div_nNumchar" class="fail">&nbsp;</div></td>
+                    <td>包含数字 大小写字母 特殊字符</td>
+                    <td class="txtCenter">Flat</td>
+                    <td class="txtCenter italic">+(n*5)</td>
+                    <td><div id="nNumchar" class="box">&nbsp;</div></td>
+                    <td><div id="nNumcharBonus" class="boxPlus">&nbsp;</div></td>
+               </tr>
+                <tr>
+                    <td><div id="div_nMidChar" class="fail">&nbsp;</div></td>
+                    <td>包含数字 大小写字母</td>
+                    <td class="txtCenter">Flat</td>
+                    <td class="txtCenter italic">+(n*2)</td>
+                    <td><div id="nMidChar" class="box">&nbsp;</div></td>
+                    <td><div id="nMidCharBonus" class="boxPlus">&nbsp;</div></td>
+               </tr>
+                <tr style='display:none'>
+                    <td><div id="div_nRequirements" class="fail">&nbsp;</div></td>
+                    <td>Requirements</td>
+                    <td class="txtCenter">Flat</td>
+                    <td class="txtCenter italic">+(n*2)</td>
+                    <td><div id="nRequirements" class="box">&nbsp;</div></td>
+                    <td><div id="nRequirementsBonus" class="boxPlus">&nbsp;</div></td>
+               </tr>
+                <tr>
+                    <th colspan="6">扣分项</th>
+                </tr>
+        <tr>
+                    <td width="1%"><div id="div_nAlphasOnly" class="pass">&nbsp;</div></td>
+                    <td width="94%">仅字母</td>
+                    <td width="1%" class="txtCenter">Flat</td>
+                    <td width="1%" class="txtCenter italic">-n</td>
+                    <td width="1%"><div id="nAlphasOnly" class="box">&nbsp;</div></td>
+                    <td width="1%"><div id="nAlphasOnlyBonus" class="boxMinus">&nbsp;</div></td>
+        </tr>  
+        <tr>
+                    <td><div id="div_nNumbersOnly" class="pass">&nbsp;</div></td>
+                    <td>仅数字</td>
+                    <td class="txtCenter">Flat</td>
+                    <td class="txtCenter italic">-n</td>
+                    <td><div id="nNumbersOnly" class="box">&nbsp;</div></td>
+                    <td><div id="nNumbersOnlyBonus" class="boxMinus">&nbsp;</div></td>
+        </tr>  
+        <tr>
+                    <td><div id="div_nRepChar" class="pass">&nbsp;</div></td>
+                    <td>重复字符(不区分大小写)</td>
+                    <td class="txtCenter">Comp</td>
+                    <td nowrap="nowrap" class="txtCenter italic"> - </td>
+                    <td><div id="nRepChar" class="box">&nbsp;</div></td>
+                    <td><div id="nRepCharBonus" class="boxMinus">&nbsp;</div></td>
+        </tr>  
+        <tr>
+                    <td><div id="div_nConsecAlphaUC" class="pass">&nbsp;</div></td>
+                    <td>连续的大写字母</td>
+                    <td class="txtCenter">Flat</td>
+                    <td class="txtCenter italic">-(n*2)</td>
+                    <td><div id="nConsecAlphaUC" class="box">&nbsp;</div></td>
+                    <td><div id="nConsecAlphaUCBonus" class="boxMinus">&nbsp;</div></td>
+        </tr>  
+        <tr>
+                    <td><div id="div_nConsecAlphaLC" class="pass">&nbsp;</div></td>
+                    <td>连续的小写字母</td>
+                    <td class="txtCenter">Flat</td>
+                    <td class="txtCenter italic">-(n*2)</td>
+                    <td><div id="nConsecAlphaLC" class="box">&nbsp;</div></td>
+                    <td><div id="nConsecAlphaLCBonus" class="boxMinus">&nbsp;</div></td>
+        </tr>  
+        <tr>
+                    <td><div id="div_nConsecNumber" class="pass">&nbsp;</div></td>
+                    <td>连续的数字</td>
+                    <td class="txtCenter">Flat</td>
+                    <td class="txtCenter italic">-(n*2)</td>
+                    <td><div id="nConsecNumber" class="box">&nbsp;</div></td>
+                    <td><div id="nConsecNumberBonus" class="boxMinus">&nbsp;</div></td>
+        </tr>  
+        <tr>
+                    <td><div id="div_nSeqAlpha" class="pass">&nbsp;</div></td>
+                    <td>相连的字母(3+)</td>
+                    <td class="txtCenter">Flat</td>
+                    <td class="txtCenter italic">-(n*3)</td>
+                    <td><div id="nSeqAlpha" class="box">&nbsp;</div></td>
+                    <td><div id="nSeqAlphaBonus" class="boxMinus">&nbsp;</div></td>
+        </tr>  
+        <tr>
+                    <td><div id="div_nSeqNumber" class="pass">&nbsp;</div></td>
+                    <td>相连的数字(3+)</td>
+                    <td class="txtCenter">Flat</td>
+                    <td class="txtCenter italic">-(n*3)</td>
+                    <td><div id="nSeqNumber" class="box">&nbsp;</div></td>
+                    <td><div id="nSeqNumberBonus" class="boxMinus">&nbsp;</div></td>
+        </tr>  
+        <tr>
+                    <td><div id="div_nSeqSymbol" class="pass">&nbsp;</div></td>
+                    <td>相连的符号 (3+)</td>
+                    <td class="txtCenter">Flat</td>
+                    <td class="txtCenter italic">-(n*3)</td>
+                    <td><div id="nSeqSymbol" class="box">&nbsp;</div></td>
+                    <td><div id="nSeqSymbolBonus" class="boxMinus">&nbsp;</div></td>
+        </tr>  
+      </table>
+       </form>
+  </div>
+</body>
+</html>
